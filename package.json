@@ -1,24 +1,48 @@
 {
-  "name": "buckwheat-web",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
-  },
-  "dependencies": {
-    "react": "19.2.0",
-    "react-dom": "19.2.0",
-    "next": "16.0.1"
-  },
-  "devDependencies": {
-    "babel-plugin-react-compiler": "1.0.0",
-    "typescript": "^5",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4"
-  }
+"name": "buckwheat-web",
+"version": "0.1.0",
+"private": true,
+"scripts": {
+  "dev": "next dev --turbopack",
+  "build": "next build",
+  "start": "next start"
+},
+"dependencies": {
+  "@radix-ui/react-alert-dialog": "^1.1.15",
+  "@radix-ui/react-dialog": "^1.1.15",
+  "@radix-ui/react-dropdown-menu": "^2.1.16",
+  "@radix-ui/react-popover": "^1.1.15",
+  "@radix-ui/react-select": "^2.2.6",
+  "@radix-ui/react-separator": "^1.1.7",
+  "@radix-ui/react-slot": "^1.2.3",
+  "@radix-ui/react-tabs": "^1.1.13",
+  "@radix-ui/react-toast": "^1.2.15",
+  "class-variance-authority": "^0.7.1",
+  "clsx": "^2.1.1",
+  "date-fns": "^3.6.0",
+  "dexie": "^3.2.7",
+  "dexie-react-hooks": "^1.1.7",
+  "framer-motion": "^11.18.2",
+  "next": "16.0.1",
+  "next-pwa": "^5.6.0",
+  "react": "19.2.0",
+  "react-dom": "19.2.0",
+  "recharts": "^2.15.4",
+  "tailwind-merge": "^2.6.0",
+  "tailwindcss-animate": "^1.0.7",
+  "uuid": "^9.0.1",
+  "workbox-window": "^7.3.0",
+  "zod": "^3.25.76",
+  "zustand": "^4.5.7"
+},
+"devDependencies": {
+  "@tailwindcss/postcss": "^4",
+  "@types/node": "^20.19.24",
+  "@types/react": "^18.3.26",
+  "@types/react-dom": "^18.3.7",
+  "@types/uuid": "^9.0.8",
+  "babel-plugin-react-compiler": "1.0.0",
+  "tailwindcss": "^4",
+  "typescript": "^5"
+}
 }
