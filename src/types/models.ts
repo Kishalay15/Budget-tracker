@@ -7,7 +7,7 @@ export interface Budget {
   startDate: Date;
   endDate: Date;
   currency: string;
-  isActive: boolean;
+  isActive: number; // 1 for active, 0 for inactive
   createdAt: Date;
   updatedAt: Date;
 }

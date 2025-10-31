@@ -13,17 +13,21 @@ export const budgetDao = {
     const budget: Budget = {
       id: generateId(),
       ...budgetData,
-      isActive: true,
+      isActive: 1,
       createdAt: now,
       updatedAt: now,
     };
 
-    // await db.budgets.where("isActive").equals(true).modify({ isActive: false });
-    await db.budgets
-      .filter((budget) => budget.isActive === true)
-      .modify({ isActive: false });
-    await db.budgets.add(budget);
+    // Deactivate all existing active budgets
+    const activeBudgets = await db.budgets
+      .where("isActive")
+      .equals(1)
+      .toArray();
+    for (const activeBudget of activeBudgets) {
+      await db.budgets.update(activeBudget.id, { isActive: 0 });
+    }
 
+    await db.budgets.add(budget);
     return budget;
   },
 
@@ -32,10 +36,7 @@ export const budgetDao = {
    * @returns The active budget or null if none exists.
    */
   async getActive(): Promise<Budget | null> {
-    return (
-      (await db.budgets.filter((budget) => budget.isActive === true).first()) ||
-      null
-    );
+    return (await db.budgets.where("isActive").equals(1).first()) || null;
   },
 
   /**
@@ -82,8 +83,12 @@ export const budgetDao = {
    * Deactivate all budgets.
    */
   async deactivateAll(): Promise<void> {
-    await db.budgets
-      .filter((budget) => budget.isActive === true)
-      .modify({ isActive: false });
+    const activeBudgets = await db.budgets
+      .where("isActive")
+      .equals(1)
+      .toArray();
+    for (const budget of activeBudgets) {
+      await db.budgets.update(budget.id, { isActive: 0 });
+    }
   },
 };

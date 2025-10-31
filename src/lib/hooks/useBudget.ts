@@ -1,10 +1,10 @@
-import { useBudgetStore } from "../stores/budgetStore";
-import { useTransactionStore } from "../stores/transactionStore";
+import { useBudgetStore } from "@/lib/stores/budgetStore";
+import { useTransactionStore } from "@/lib/stores/transactionStore";
 import { useEffect } from "react";
 import {
   calculateBudgetStats,
   calculatePeriodAnalytics,
-} from "../utils/calculations";
+} from "@/lib/utils/calculations";
 import { BudgetStats, PeriodAnalytics } from "@/types/models";
 
 export const useBudget = () => {

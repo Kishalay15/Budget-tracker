@@ -102,47 +102,60 @@ export const transactionDao = {
     filters: TransactionFilters = {},
     sort: TransactionSort = { field: "timestamp", direction: "desc" },
   ): Promise<Transaction[]> {
-    let collection = db.transactions.where("budgetId").equals(budgetId);
+    // Start with all transactions for the budget
+    let transactions = await db.transactions
+      .where("budgetId")
+      .equals(budgetId)
+      .toArray();
 
     // Apply filters
     if (filters.startDate) {
-      collection = collection.filter(
+      transactions = transactions.filter(
         (transaction) => transaction.timestamp >= filters.startDate!,
       );
     }
 
     if (filters.endDate) {
-      collection = collection.filter(
+      transactions = transactions.filter(
         (transaction) => transaction.timestamp <= filters.endDate!,
       );
     }
 
     if (filters.minAmount !== undefined) {
-      collection = collection.filter(
+      transactions = transactions.filter(
         (transaction) => transaction.amount >= filters.minAmount!,
       );
     }
 
     if (filters.maxAmount !== undefined) {
-      collection = collection.filter(
+      transactions = transactions.filter(
         (transaction) => transaction.amount <= filters.maxAmount!,
       );
     }
 
     if (filters.searchQuery) {
       const query = filters.searchQuery.toLowerCase();
-      collection = collection.filter(
+      transactions = transactions.filter(
         (transaction) =>
           transaction.comment?.toLowerCase().includes(query) ?? false,
       );
     }
 
     // Apply sorting
-    return await collection.sortBy(sort.field).then((transactions) => {
-      if (sort.direction === "desc") {
-        return transactions.reverse();
+    transactions.sort((a, b) => {
+      let aValue: any = a[sort.field];
+      let bValue: any = b[sort.field];
+
+      if (sort.field === "timestamp") {
+        aValue = aValue.getTime();
+        bValue = bValue.getTime();
       }
-      return transactions;
+
+      if (aValue < bValue) return sort.direction === "asc" ? -1 : 1;
+      if (aValue > bValue) return sort.direction === "asc" ? 1 : -1;
+      return 0;
     });
+
+    return transactions;
   },
 };

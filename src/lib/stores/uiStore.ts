@@ -44,7 +44,7 @@ export const useUIStore = create<UIState>((set) => ({
    */
   settings: {
     defaultCurrency: DEFAULT_CURRENCY,
-    locale: "en-US",
+    locale: "en-IN",
     theme: "light",
     firstLaunch: true,
   },
