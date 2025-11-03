@@ -48,7 +48,7 @@ export default function Home() {
           <div className="text-center max-w-md">
             <div className="mb-8">
               <h1 className="text-4xl font-bold text-black dark:text-zinc-50 mb-4">
-                💰 Buckwheat
+                 Finnova
               </h1>
               <p className="text-zinc-600 dark:text-zinc-400 text-lg">
                 Simple daily budget tracking to help you spend money wisely.
