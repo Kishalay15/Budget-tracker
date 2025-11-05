@@ -5,6 +5,9 @@ import { useBudget } from "@/lib/hooks/useBudget";
 import { useUIStore } from "@/lib/stores/uiStore";
 import { BudgetSetupModal } from "@/components/budget/BudgetSetupModal";
 import { AddTransactionModal } from "@/components/transactions/AddTransactionModal";
+import { EditTransactionModal } from "@/components/transactions/EditTransactionModal";
+import { TransactionHistoryModal } from "@/components/transactions/TransactionHistoryModal";
+import { SettingsModal } from "@/components/settings/SettingsModal";
 import { formatCurrency, formatDate } from "@/lib/utils/date";
 
 export default function Home() {
@@ -13,11 +16,20 @@ export default function Home() {
 
   const {
     addTransactionState,
+    editTransactionState,
     isBudgetSetupOpen,
+    isHistoryOpen,
+    isSettingsOpen,
     openAddTransaction,
     closeAddTransaction,
+    openEditTransaction,
+    closeEditTransaction,
     openBudgetSetup,
     closeBudgetSetup,
+    openHistory,
+    closeHistory,
+    openSettings,
+    closeSettings,
     settings,
   } = useUIStore();
 
@@ -48,7 +60,7 @@ export default function Home() {
           <div className="text-center max-w-md">
             <div className="mb-8">
               <h1 className="text-4xl font-bold text-black dark:text-zinc-50 mb-4">
-                 Finnova
+                Finnova
               </h1>
               <p className="text-zinc-600 dark:text-zinc-400 text-lg">
                 Simple daily budget tracking to help you spend money wisely.
@@ -82,13 +94,44 @@ export default function Home() {
       <div className="min-h-screen bg-zinc-50 dark:bg-black font-sans">
         <div className="max-w-md mx-auto p-4 pb-20">
           {/* Header */}
+          {/* Header */}
           <header className="mb-6 pt-4">
-            <h1 className="text-2xl font-bold text-black dark:text-zinc-50">
-              Buckwheat
-            </h1>
-            <p className="text-zinc-600 dark:text-zinc-400">
-              {formatDate(budget.startDate)} - {formatDate(budget.endDate)}
-            </p>
+            <div className="flex justify-between items-center">
+              <div>
+                <h1 className="text-2xl font-bold text-black dark:text-zinc-50">
+                  Coin Crush
+                </h1>
+                <p className="text-zinc-600 dark:text-zinc-400">
+                  {formatDate(budget.startDate)} - {formatDate(budget.endDate)}
+                </p>
+              </div>
+              <button
+                onClick={openSettings}
+                className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
+                aria-label="Settings"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-zinc-600 dark:text-zinc-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+              </button>
+            </div>
           </header>
 
           {/* Daily Budget Card */}
@@ -142,7 +185,10 @@ export default function Home() {
               >
                 Add Expense
               </button>
-              <button className="border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 py-3 rounded-xl font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors text-sm">
+              <button
+                onClick={openHistory}
+                className="border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 py-3 rounded-xl font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors text-sm"
+              >
                 View History
               </button>
             </div>
@@ -213,7 +259,10 @@ export default function Home() {
                 ))}
 
                 {transactions.length > 5 && (
-                  <button className="w-full text-center text-primary hover:text-primary/90 font-medium py-2">
+                  <button
+                    onClick={openHistory}
+                    className="w-full text-center text-primary hover:text-primary/90 font-medium py-2"
+                  >
                     View All Transactions
                   </button>
                 )}
@@ -237,6 +286,19 @@ export default function Home() {
         initialAmount={addTransactionState.initialAmount}
         initialComment={addTransactionState.initialComment}
       />
+
+      {/* Edit Transaction Modal */}
+      <EditTransactionModal
+        isOpen={editTransactionState.isOpen}
+        onClose={closeEditTransaction}
+        transaction={editTransactionState.transaction}
+      />
+
+      {/* Transaction History Modal */}
+      <TransactionHistoryModal isOpen={isHistoryOpen} onClose={closeHistory} />
+
+      {/* Settings Modal */}
+      <SettingsModal isOpen={isSettingsOpen} onClose={closeSettings} />
 
       {/* Error Toast */}
       {error && (

@@ -5,6 +5,9 @@ import { useBudget } from "@/lib/hooks/useBudget";
 import { useUIStore } from "@/lib/stores/uiStore";
 import { BudgetSetupModal } from "@/components/budget/BudgetSetupModal";
 import { AddTransactionModal } from "@/components/transactions/AddTransactionModal";
+import { EditTransactionModal } from "@/components/transactions/EditTransactionModal";
+import { TransactionHistoryModal } from "@/components/transactions/TransactionHistoryModal";
+import { SettingsModal } from "@/components/settings/SettingsModal";
 import { formatCurrency, formatDate } from "@/lib/utils/date";
 
 export default function Home() {
@@ -13,11 +16,17 @@ export default function Home() {
 
   const {
     addTransactionState,
+    editTransactionState,
     isBudgetSetupOpen,
+    isHistoryOpen,
     openAddTransaction,
     closeAddTransaction,
+    openEditTransaction,
+    closeEditTransaction,
     openBudgetSetup,
     closeBudgetSetup,
+    openHistory,
+    closeHistory,
     settings,
   } = useUIStore();
 
@@ -84,7 +93,7 @@ export default function Home() {
           {/* Header */}
           <header className="mb-6 pt-4">
             <h1 className="text-2xl font-bold text-black dark:text-zinc-50">
-              Buckwheat
+              Coin Crush
             </h1>
             <p className="text-zinc-600 dark:text-zinc-400">
               {formatDate(budget.startDate)} - {formatDate(budget.endDate)}
@@ -142,7 +151,10 @@ export default function Home() {
               >
                 Add Expense
               </button>
-              <button className="border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 py-3 rounded-xl font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors text-sm">
+              <button
+                onClick={openHistory}
+                className="border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 py-3 rounded-xl font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors text-sm"
+              >
                 View History
               </button>
             </div>
@@ -213,7 +225,10 @@ export default function Home() {
                 ))}
 
                 {transactions.length > 5 && (
-                  <button className="w-full text-center text-primary hover:text-primary/90 font-medium py-2">
+                  <button
+                    onClick={openHistory}
+                    className="w-full text-center text-primary hover:text-primary/90 font-medium py-2"
+                  >
                     View All Transactions
                   </button>
                 )}
@@ -237,6 +252,16 @@ export default function Home() {
         initialAmount={addTransactionState.initialAmount}
         initialComment={addTransactionState.initialComment}
       />
+
+      {/* Edit Transaction Modal */}
+      <EditTransactionModal
+        isOpen={editTransactionState.isOpen}
+        onClose={closeEditTransaction}
+        transaction={editTransactionState.transaction}
+      />
+
+      {/* Transaction History Modal */}
+      <TransactionHistoryModal isOpen={isHistoryOpen} onClose={closeHistory} />
 
       {/* Error Toast */}
       {error && (

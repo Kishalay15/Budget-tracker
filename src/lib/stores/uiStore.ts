@@ -12,6 +12,8 @@ interface UIState {
   addTransactionState: AddTransactionState;
   editTransactionState: EditTransactionState;
   isBudgetSetupOpen: boolean;
+  isHistoryOpen: boolean;
+  isSettingsOpen: boolean;
 
   // App settings
   settings: AppSettings;
@@ -23,6 +25,10 @@ interface UIState {
   closeEditTransaction: () => void;
   openBudgetSetup: () => void;
   closeBudgetSetup: () => void;
+  openHistory: () => void;
+  closeHistory: () => void;
+  openSettings: () => void;
+  closeSettings: () => void;
   updateSettings: (settings: Partial<AppSettings>) => void;
 }
 
@@ -38,6 +44,8 @@ export const useUIStore = create<UIState>((set) => ({
     transaction: null,
   },
   isBudgetSetupOpen: false,
+  isHistoryOpen: false,
+  isSettingsOpen: false,
 
   /**
    * App settings
@@ -109,6 +117,34 @@ export const useUIStore = create<UIState>((set) => ({
    */
   closeBudgetSetup: () => {
     set({ isBudgetSetupOpen: false });
+  },
+
+  /**
+   * Open history modal
+   */
+  openHistory: () => {
+    set({ isHistoryOpen: true });
+  },
+
+  /**
+   * Close history modal
+   */
+  closeHistory: () => {
+    set({ isHistoryOpen: false });
+  },
+
+  /**
+   * Open settings modal
+   */
+  openSettings: () => {
+    set({ isSettingsOpen: true });
+  },
+
+  /**
+   * Close settings modal
+   */
+  closeSettings: () => {
+    set({ isSettingsOpen: false });
   },
 
   /**
